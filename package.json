@@ -1,13 +1,14 @@
 {
   "name": "arqing-visual",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "release": "npm version patch -m \"chore(release): %s\" && git push && git push --tags"
   },
   "dependencies": {
     "react": "^19.2.0",
