@@ -1,0 +1,77 @@
+.footer {
+    background: #274c77;
+    color: white;
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+.content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.footerLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logoImage {
+    height: 45px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    transform: scale(1.1);
+}
+
+.logoText {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.copyright {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.social {
+    display: flex;
+    gap: 1rem;
+}
+
+.socialLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.socialLink:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
