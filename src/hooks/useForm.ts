@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import type { ContactFormData, FormErrors } from '../types';
 import { validateEmail, validateRequired, validateMinLength } from '../utils/validators';
+import { submitContactForm } from '../api/contact';
 
 export const useForm = (initialValues: ContactFormData) => {
   const [values, setValues] = useState<ContactFormData>(initialValues);
@@ -49,14 +50,18 @@ export const useForm = (initialValues: ContactFormData) => {
     if (!validate()) return;
 
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log('Form submitted:', values);
-    setIsSubmitting(false);
-    
-    if (onSuccess) onSuccess();
+    try {
+      const success = await submitContactForm(values);
+      setIsSubmitting(false);
+      if (success) {
+        if (onSuccess) onSuccess();
+      } else {
+        setErrors(prev => ({ ...prev, submit: 'Error al enviar el mensaje. Intenta nuevamente.' }));
+      }
+    } catch (err) {
+      setIsSubmitting(false);
+      setErrors(prev => ({ ...prev, submit: 'Error de red. Intenta nuevamente.' }));
+    }
   };
 
   const reset = () => {

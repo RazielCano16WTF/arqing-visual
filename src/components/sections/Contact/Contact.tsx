@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from './Contact.module.css';
 import ContactForm from './ContactForm';
 import { useForm } from '../../../hooks/useForm';
@@ -16,9 +17,13 @@ export default function Contact() {
     message: ''
   });
 
+  const [success, setSuccess] = useState(false);
+
   const onSuccess = () => {
-    alert('¡Gracias por tu mensaje! Te contactaremos pronto.');
+    setSuccess(true);
     reset();
+    // Clear success after 5 seconds
+    setTimeout(() => setSuccess(false), 5000);
   };
 
   return (
@@ -30,6 +35,7 @@ export default function Contact() {
         isSubmitting={isSubmitting}
         onChange={handleChange}
         onSubmit={(e) => handleSubmit(e, onSuccess)}
+        success={success}
       />
     </section>
   );
