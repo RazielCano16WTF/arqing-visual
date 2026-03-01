@@ -72,17 +72,24 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
+    /* leave space for arrow buttons on sides */
+    width: calc(100% - 56px);
+    max-width: 100%;
     padding: 1.5rem;
     color: white;
     z-index: 2;
     transition: all 0.3s ease;
+    text-align: left;
+    pointer-events: none; /* children can enable pointer-events individually */
 }
 
 .portfolioItem:hover .portfolioOverlay {
+    left: 50%;
     bottom: 50%;
-    transform: translateY(50%);
+    transform: translate(-50%, 50%);
     padding: 2rem;
+    text-align: center;
+    pointer-events: auto;
 }
 
 .portfolioTitle {
@@ -90,6 +97,16 @@
     margin-bottom: 0.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     font-weight: 600;
+}
+
+.portfolioTitle,
+.portfolioCategory {
+    text-align: left;
+}
+
+.portfolioItem:hover .portfolioTitle,
+.portfolioItem:hover .portfolioCategory {
+    text-align: center;
 }
 
 .portfolioCategory {
@@ -102,13 +119,10 @@
 
 .imageDots {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 0.5rem;
     margin-top: 0.75rem;
-}
-
-.portfolioItem:hover .imageDots {
-    justify-content: center;
+    pointer-events: auto;
 }
 
 .dot {
@@ -131,4 +145,39 @@
     background: white;
     transform: scale(1.2);
     border-color: white;
+}
+
+/* Navigation arrows (only icon visible, no circular background) */
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 6px; /* clickable area */
+    background: transparent;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.15s;
+    opacity: 0;
+}
+
+.navButton.left { left: 12px; }
+.navButton.right { right: 12px; }
+
+/* Show arrows on hover or when focused */
+.portfolioItem:hover .navButton { opacity: 1; }
+
+.arrowIcon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    filter: invert(1) brightness(2) contrast(1.1);
+}
+
+.navButton.left .arrowIcon {
+    transform: rotate(180deg);
 }

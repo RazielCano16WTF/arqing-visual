@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { PortfolioItem } from '../../../types';
+import siguienteIcon from '../../../assets/siguiente.svg';
 import styles from './Portfolio.module.css';
 
 interface PortfolioItemComponentProps {
@@ -19,9 +20,9 @@ export default function PortfolioItemComponent({ item }: PortfolioItemComponentP
 
     const startRotation = () => {
       intervalRef.current = window.setInterval(() => {
-        setCurrentImageIndex((prevIndex) => 
-          (prevIndex + 1) % item.images.length
-        );
+            setCurrentImageIndex((prevIndex) => 
+              (prevIndex + 1) % item.images.length
+            );
       }, rotationSpeed);
     };
 
@@ -54,14 +55,52 @@ export default function PortfolioItemComponent({ item }: PortfolioItemComponentP
     }, rotationSpeed);
   };
 
+  const restartRotation = () => {
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current);
+    }
+    const rotationSpeed = 2500 + Math.random() * 1500;
+    intervalRef.current = window.setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        (prevIndex + 1) % item.images.length
+      );
+    }, rotationSpeed);
+  };
+
+  const handlePrev = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + item.images.length) % item.images.length);
+    restartRotation();
+  };
+
+  const handleNext = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % item.images.length);
+    restartRotation();
+  };
+
   return (
     <div className={styles.portfolioItem}>
       <div className={styles.imageSlider}>
-        {item.images.map((image, index) => (
+        <button
+          className={`${styles.navButton} ${styles.left}`}
+          onClick={(e) => { handlePrev(); (e.currentTarget as HTMLButtonElement).blur(); }}
+          aria-label={`Imagen anterior de ${item.title}`}
+        >
+          <img src={siguienteIcon} alt="" className={styles.arrowIcon} aria-hidden="true" />
+        </button>
+        <button
+          className={`${styles.navButton} ${styles.right}`}
+          onClick={(e) => { handleNext(); (e.currentTarget as HTMLButtonElement).blur(); }}
+          aria-label={`Siguiente imagen de ${item.title}`}
+        >
+          <img src={siguienteIcon} alt="" className={styles.arrowIcon} aria-hidden="true" />
+        </button>
+        {item.images.map((imageObj, index) => (
           <img
             key={index}
-            src={image}
-            alt={`${item.title} - ${index + 1}`}
+            src={imageObj.src}
+            srcSet={imageObj.srcset}
+            alt={imageObj.alt ?? `${item.title} - ${index + 1}`}
+            loading="lazy"
             className={`${styles.portfolioImage} ${
               index === currentImageIndex ? styles.active : ''
             }`}
